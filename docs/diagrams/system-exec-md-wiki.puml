@@ -6,10 +6,50 @@ Person(personEditor, "Editor", "Administers tenant's user access")
 Person(personReader, "Reader", "Creates, edits and views sites and notebooks")
 
 System_Boundary(c1, "exec-md-wiki") {
-    Container(containerAlias, "exec-md-wiki", "Technology", "Wiki supporting exec-md notebooks")
+    Container(wikiApplication, "exec-md-wiki-app", "Svelte, exec-md")
+    Container(apiGateway, "exec-md-wiki-api-gateway", "C# .NET")
+    Container(eventstoreAlias, "exec-md-wiki-event-store", "Technology")
+
+    Container(ch1, "command handler 1", "C# .NET")
+    Container(ch2, "command handler 2", "C# .NET")
+    Container(ch3, "command handler 3", "C# .NET")
+    Container(chn, "command handler n", "C# .NET")
+
+    Container(qh1, "query handler 1", "C# .NET")
+    Container(qh2, "query handler 2", "C# .NET")
+    Container(qh3, "query handler 3", "C# .NET")
+    Container(qhn, "query handler n", "C# .NET")
 }
 
-Rel(personAdministrator, containerAlias, "manages tenants")
-Rel(personEditor, containerAlias, "manages user access within tenant")
-Rel(personReader, containerAlias, "edits, search and reads and sites and notebooks")
+Rel(personAdministrator, wikiApplication, "manages tenants")
+Rel(personEditor, wikiApplication, "manages user access within tenant")
+Rel(personReader, wikiApplication, "edits, search and reads and sites and notebooks")
+
+Rel(wikiApplication, apiGateway, "https")
+
+Rel(apiGateway, ch1, "invoke")
+Rel(apiGateway, ch2, "invoke")
+Rel(apiGateway, ch3, "invoke")
+Rel(apiGateway, chn, "invoke")
+
+Rel(apiGateway, qh1, "invoke")
+Rel(apiGateway, qh2, "invoke")
+Rel(apiGateway, qh3, "invoke")
+Rel(apiGateway, qhn, "invoke")
+
+Rel(ch1, eventstoreAlias, "publish")
+Rel(ch2, eventstoreAlias, "publish")
+Rel(ch3, eventstoreAlias, "publish")
+Rel(chn, eventstoreAlias, "publish")
+
+Rel(ch1, eventstoreAlias, "alert")
+Rel(ch2, eventstoreAlias, "alert")
+Rel(ch3, eventstoreAlias, "alert")
+Rel(chn, eventstoreAlias, "alert")
+
+Rel(eventstoreAlias, qh1, "alert")
+Rel(eventstoreAlias, qh2, "alert")
+Rel(eventstoreAlias, qh3, "alert")
+Rel(eventstoreAlias, qhn, "alert")
+
 @enduml
