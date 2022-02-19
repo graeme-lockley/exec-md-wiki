@@ -13,9 +13,7 @@ This implementation will have the following features:
 
 # Context
 
-![context image](./docs/diagrams/out/context.png "Content")
-
-![your-UML-diagram-name](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/src/context.puml)
+![context image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/context.puml "Content")
 
 Highlights from the context diagram:
 
@@ -31,5 +29,5 @@ Before looking at the container view of `exec-md-wiki` it is worthwhile covering
 - The heart of the system is event based
 - Read and write projections are built on demand
 
-![context image](./docs/diagrams/out/system-exec-md-wiki.png "System exec-md-wiki")
+![context image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/system-exec-md-wiki.png "System exec-md-wiki")
 
