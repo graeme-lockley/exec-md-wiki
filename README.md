@@ -14,3 +14,22 @@ This implementation will have the following features:
 # Context
 
 ![context image](./docs/diagrams/out/context.png "Content")
+
+![your-UML-diagram-name](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/src/context.puml)
+
+Highlights from the context diagram:
+
+- The wiki will be tenant based meaning that it is possible to host multiple, disconnected organisations
+- There are different levels of access within a tenant
+- A reader within a tenant will be able to create sites and notebooks
+
+# `exec-md-wiki`
+
+Before looking at the container view of `exec-md-wiki` it is worthwhile covering some of the design considerations of this system:
+
+- The user's view is view browser
+- The heart of the system is event based
+- Read and write projections are built on demand
+
+![context image](./docs/diagrams/out/system-exec-md-wiki.png "System exec-md-wiki")
+

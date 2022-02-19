@@ -5,7 +5,7 @@ DIAGRAMS_HOME="`pwd`/`dirname $0`/../docs/diagrams"
 
 cd "${DIAGRAMS_HOME}/src"
 
-for puml in "*.puml"
+for puml in `ls -1 *.puml`
 do
   echo $puml
   java -jar "$PLANTUML_JAR" -o "${DIAGRAMS_HOME}/out" "$puml"

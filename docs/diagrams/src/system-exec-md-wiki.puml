@@ -1,0 +1,15 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(personAdministrator, "Administrator", "Creates and edits tenants")
+Person(personEditor, "Editor", "Administers tenant's user access")
+Person(personReader, "Reader", "Creates, edits and views sites and notebooks")
+
+System_Boundary(c1, "exec-md-wiki") {
+    Container(containerAlias, "exec-md-wiki", "Technology", "Wiki supporting exec-md notebooks")
+}
+
+Rel(personAdministrator, containerAlias, "manages tenants")
+Rel(personEditor, containerAlias, "manages user access within tenant")
+Rel(personReader, containerAlias, "edits, search and reads and sites and notebooks")
+@enduml
