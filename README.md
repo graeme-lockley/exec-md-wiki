@@ -29,5 +29,5 @@ Before looking at the container view of `exec-md-wiki` it is worthwhile covering
 - The heart of the system is event based
 - Read and write projections are built on demand
 
-![context image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/system-exec-md-wiki.png "System exec-md-wiki")
+![context image](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/graeme-lockley/exec-md-wiki/main/docs/diagrams/system-exec-md-wiki.puml "System exec-md-wiki")
 
