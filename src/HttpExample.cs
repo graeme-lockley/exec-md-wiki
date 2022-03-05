@@ -12,7 +12,15 @@ namespace My.Functions
 {
     public sealed class Singleton1
     {
-        public int counter = 0;
+        private int _counter = 0;
+
+        public static int counter
+        {
+            get
+            {
+                return Instance._counter;
+            }
+        }
 
         private Singleton1() { }
         private static Singleton1 instance = null;
@@ -28,9 +36,9 @@ namespace My.Functions
             }
         }
 
-        public void bump()
+        public static void bump()
         {
-            Instance.counter += 1;
+            Instance._counter += 1;
         }
     }
 
@@ -43,7 +51,7 @@ namespace My.Functions
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            Singleton1.Instance.bump();
+            Singleton1.bump();
 
             string name = req.Query["name"];
 
@@ -52,8 +60,8 @@ namespace My.Functions
             name = name ?? data?.name;
 
             string responseMessage = string.IsNullOrEmpty(name)
-                ? $"{Singleton1.Instance.counter} - this HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name} - {Singleton1.Instance.counter}. This HTTP triggered function executed successfully.";
+                ? $"{Singleton1.counter} - this HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
+                : $"Hello, {name} - {Singleton1.counter}. This HTTP triggered function executed successfully.";
 
             return new OkObjectResult(responseMessage);
         }
