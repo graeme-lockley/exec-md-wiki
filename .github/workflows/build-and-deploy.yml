@@ -1,0 +1,101 @@
+name: build-and-deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint-bicep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: 'Lint Bicep source'
+        run: ./scripts/lint-bicep.sh
+
+  lint-bash:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Lint bash scripts
+        run: ./scripts/lint-bash.sh
+
+  build-azure-infrastructure:
+    runs-on: ubuntu-latest
+    needs: [lint-bicep, lint-bash]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup resource groups
+        run: ./scripts/configure-resource-groups.sh
+
+      - name: Setup functions
+        run: ./scripts/configure-functions.sh
+
+  build-deploy-functions:
+    runs-on: ubuntu-latest
+    needs: build-azure-infrastructure
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Populate env from ./scripts/.env
+        uses: xom9ikk/dotenv@v1.0.2
+        with:
+          path: ./scripts
+
+      - name: Setup .NET Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      
+      - name: Compile source
+        run: ./scripts/build-compile.sh
+
+      - name: Create distribution
+        run: ./scripts/build-distribution.sh
+
+      - name: Get FunctionApp publish profile
+        id: webapp
+        uses: aliencube/publish-profile-actions@v1
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        with:
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          appName: ${{ env.FUNCTIONAPP_NAME }}
+
+      # - name: Show Profile
+      #   shell: bash
+      #   run: |
+      #     echo "WebApp: ${{ steps.webapp.outputs.profile }}"
+
+      - name: Publish distribution to Azure
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ env.FUNCTIONAPP_NAME }}
+          package: ${{ env.BUILD_PACKAGE_PATH_FILE_NAME }}
+          publish-profile: ${{ steps.webapp.outputs.profile }}

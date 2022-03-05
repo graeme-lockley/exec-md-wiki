@@ -1,0 +1,6 @@
+src/bin
+src/obj
+src/output
+infra/*.json
+
+*.log
